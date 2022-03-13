@@ -1,5 +1,5 @@
 import { NOT_FOUND } from "./symbols.js";
-import { BiMap,unwrap } from "../utils.js";
+import { BiMap,unwrap } from "../utils/mod.js";
 import { EsModExtern } from "./esmod.js";
 
 export class HttpExtern {

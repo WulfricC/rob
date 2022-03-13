@@ -1,5 +1,5 @@
 import { ExternScheme } from "./scheme-handler.js";
-import { objectFollowPath } from "../utils.js";
+import { objectFollowPath } from "../utils/mod.js";
 
 
 export class EsModExtern extends ExternScheme {

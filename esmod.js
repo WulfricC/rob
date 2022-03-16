@@ -3,15 +3,24 @@ import { objectFollowPath } from "../utils/mod.js";
 
 
 export class EsModExtern extends ExternScheme {
+    constructor() {
+        super();
+        this.cache = new Map();
+    }
     getURI(item) {
-        if (typeof item.name !== 'string')
-            throw new Error(`Cannot find valid name for item, Name is: "${item.name}"`);
+        if (typeof item.name !== 'string') {
+            console.log('item');
+            throw new Error(`Cannot find valid name for item "${item}", Name is: "${item.name}"`);
+        }
         if (!('moduleURL' in item))
             throw new Error(`Cannot find moduleURL for item with name ${item.name}`);
         return esmodUri(item.moduleURL, item.name);
     }
     async getItem(uri) {
-        return importEsmod(uri);
+        if(this.cache.has(uri)) return this.cache.get(uri);
+        const item = importEsmod(uri);
+        this.cache.set(uri, item);
+        return item;
     }
 }
 
@@ -36,7 +45,7 @@ export function esmodUri(url, path) {
     const scheme = url.match(/^\w+:/g)[0];
     if (scheme === 'file:' && globalThis.Deno) {
         const cwd = ('/' + Deno.cwd().replaceAll('\\', '/')).replace('//', '/');
-        url = location.origin + url.replace('file://', '').replace(cwd, '');
+        url = (location?.origin ?? 'http://localhost') + url.replace('file://', '').replace(cwd, '');
     }
     url = url.replace(/^\w+:/g, 'esmod:');
     if (path.length > 0)

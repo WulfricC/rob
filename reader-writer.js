@@ -4,8 +4,8 @@ export class Write{
     #buffer;
     #bufferSize;
     #blobs;
-    constructor(externs, references = []) {
-        this.externs = externs;
+    constructor(externHandler, header = []) {
+        this.externs = externHandler;
         this.references = new Map();
         this.#bufferSize = 1024
         this.#buffer = new ArrayBuffer(this.#bufferSize);
@@ -14,7 +14,7 @@ export class Write{
 
         this.#position = 0;
         this.i = 0;
-        for (const ref of references)
+        for (const ref of header)
             this.set(this.newId(), ref);
     }
     #grow () {
@@ -106,18 +106,19 @@ export class Write{
     }
 }
 
+/** create a reader which reads from 'buffer'.  header must be same as writer's header */
 export class Read{
     #dataView;
     #position;
     #buffer;
-    constructor(externs, buffer, references = []) {
+    constructor(externHandler, buffer, header = []) {
         this.references = new Map();
-        this.externs = externs;
+        this.externs = externHandler;
         this.#buffer = buffer;
         this.#dataView = new DataView(buffer);
         this.#position = 0;
         this.i = 0;
-        for (const ref of references)
+        for (const ref of header)
             this.set(this.newId(), ref);
     }
     newId () {

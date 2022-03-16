@@ -24,6 +24,10 @@ export class EsModExtern extends ExternScheme {
     }
 }
 
+export function checkEsmod(item) {
+    return typeof item.name !== 'string' && 'moduleURL' in item;
+}
+
 export async function importEsmod(uri) {
     const url = new URL(uri);
     if (url.protocol !== 'esmod:')

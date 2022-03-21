@@ -3,7 +3,7 @@ import { branch } from "./encodings/flow-encodings.js";
 import { object, array, struct } from "./encodings/collection-encodings.js";
 import { utf16 } from "./encodings/string-encodings.js";
 import { float64, constant, boolean } from "./encodings/base-encodings.js";
-import { referencable, reference, any, extern } from "./encodings/reference-encodings.js";
+import { referencable, reference, any, extern, Namespace } from "./encodings/reference-encodings.js";
 
 const moduleURL = import.meta.url;
 
@@ -82,3 +82,9 @@ export class _Error {
     static encoding = struct(Error, { message: utf16, stack: utf16 });
 }
 setAlias(Error, _Error);
+
+export class _Module {
+    static moduleURL = moduleURL;
+    static encoding = extern('link');
+}
+setAlias(Namespace, _Module);

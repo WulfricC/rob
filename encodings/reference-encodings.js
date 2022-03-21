@@ -42,6 +42,7 @@ export const referencable = (format) => (rw) => {
 /**external object, handled via the passed in ExternHandler*/
 export const extern = (scheme) => (rw) => {
     const text = ascii(rw);
+    if(!(rw instanceof Write || rw instanceof Read)) console.log(rw);
     if (rw instanceof Write)
         return (value) => {
             const uri = rw.externs.getURI(scheme, value);

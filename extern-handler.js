@@ -34,7 +34,6 @@ export class ExternHandler {
         const uri = this.#schemeHandlers[scheme].getURI(item);
         return uri;
     }
-    
 
     /** Fetch the item of the uri */
     getItem(uri) {

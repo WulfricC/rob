@@ -31,6 +31,13 @@ export class _Function {
 }
 setAlias(Function, _Function);
 
+const AsyncFunction = (async () => {}).constructor;
+export class _AsyncFunction {
+    static moduleURL = moduleURL;
+    static encoding = referencable(extern('esmod'));
+}
+setAlias(AsyncFunction, _AsyncFunction);
+
 export class _Null {
     static moduleURL = moduleURL;
     static encoding = constant(null);
@@ -77,14 +84,56 @@ export class _Array {
 }
 setAlias(Array, _Array);
 
+export class _Module {
+    static moduleURL = moduleURL;
+    static encoding = extern('link');
+}
+setAlias(Namespace, _Module);
+
 export class _Error {
     static moduleURL = moduleURL;
     static encoding = struct(Error, { message: utf16, stack: utf16 });
 }
 setAlias(Error, _Error);
 
-export class _Module {
+export class _RangeError {
     static moduleURL = moduleURL;
-    static encoding = extern('link');
+    static encoding = struct(RangeError, { message: utf16, stack: utf16 });
 }
-setAlias(Namespace, _Module);
+setAlias(RangeError, _RangeError);
+
+export class _ReferenceError {
+    static moduleURL = moduleURL;
+    static encoding = struct(ReferenceError, { message: utf16, stack: utf16 });
+}
+setAlias(ReferenceError, _ReferenceError);
+
+export class _SyntaxError {
+    static moduleURL = moduleURL;
+    static encoding = struct(SyntaxError, { message: utf16, stack: utf16 });
+}
+setAlias(SyntaxError, _SyntaxError);
+
+export class _TypeError {
+    static moduleURL = moduleURL;
+    static encoding = struct(TypeError, { message: utf16, stack: utf16 });
+}
+setAlias(TypeError, _TypeError);
+
+export class _URIError {
+    static moduleURL = moduleURL;
+    static encoding = struct(URIError, { message: utf16, stack: utf16 });
+}
+setAlias(URIError, _URIError);
+
+export class _EvalError {
+    static moduleURL = moduleURL;
+    static encoding = struct(EvalError, { message: utf16, stack: utf16 });
+}
+setAlias(EvalError, _EvalError);
+
+export class _InternalError {
+    static moduleURL = moduleURL;
+    static encoding = struct(Error, { message: utf16, stack: utf16 });
+}
+setAlias(InternalError, _InternalError);

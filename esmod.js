@@ -32,7 +32,7 @@ export async function importEsmod(uri) {
     const url = new URL(uri);
     if (url.protocol !== 'esmod:')
         throw new Error(`invalid esmod uri: ${uri}`);
-    const fileUrl = (url.host === 'localhost' && globalThis.Deno 
+    const fileUrl = (globalThis.Deno && new URL(Deno.mainModule).protocol === 'file:' && url.host === new URL(location?.origin).host
         ? 'file://' + ('/' + Deno.cwd().replaceAll('\\', '/')).replace('//', '/') + url.pathname
         : uri.replace(/^\w+:/g, 'http:')).replace(/#.*/, '');
     const path = uri.match(/(?<=#)[\w\.]+(?=\?|$)/)[0].split('.');

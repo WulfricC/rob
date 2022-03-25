@@ -131,9 +131,3 @@ export class _EvalError {
     static encoding = struct(EvalError, { message: utf16, stack: utf16 });
 }
 setAlias(EvalError, _EvalError);
-
-export class _InternalError {
-    static moduleURL = moduleURL;
-    static encoding = struct(Error, { message: utf16, stack: utf16 });
-}
-setAlias(InternalError, _InternalError);

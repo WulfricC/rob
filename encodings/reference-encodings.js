@@ -1,22 +1,21 @@
 import { Read, Write } from "../reader-writer.js";
 import { uint32 } from "./base-encodings.js";
-import { ascii } from "./string-encodings.js"
+import { ascii, variableInt } from "./string-encodings.js"
 import { getAlias, hasAlias } from "../alias.js";
 
 /**format as a reference to the item, if item has not been stored, format as format*/
 export const referencable = (format) => (rw) => {
     const formatRW = format(rw);
-    const indexRW = uint32(rw);
-    const flag = 31;
+    const indexRW = variableInt(rw);
 
     if (rw instanceof Write)
         return (value) => {
             if (rw.has(value)) {
-                indexRW(rw.get(value));
+                indexRW(rw.get(value) << 1);
             }
             else {
                 const id = rw.newId();
-                indexRW(id | 1 << flag);
+                indexRW(id << 1 | 1);
                 formatRW(value, id);
                 rw.set(id, value);
             }
@@ -25,16 +24,17 @@ export const referencable = (format) => (rw) => {
     if (rw instanceof Read) {
         return () => {
             const reference = indexRW();
-            if (reference >>> flag) {
-                const item = formatRW(reference & ~(1 << flag));
+            const id = reference >>> 1;
+            if (reference & 1) {
+                const item = formatRW(id);
                 if (item instanceof Promise)
-                    return item.then(v => rw.set(reference & ~(1 << flag),v))
-                rw.set(reference & ~(1 << flag),item);
+                    return item.then(v => rw.set(id,v))
+                rw.set(id,item);
                 return item;
             }
-            if (rw.has(reference))
-                return rw.get(reference);
-            throw new Error(`item at ${reference} has not yet been referenced`);
+            if (rw.has(id))
+                return rw.get(id);
+            throw new Error(`item at ${id} has not yet been referenced`);
         };
     }
 };
@@ -87,7 +87,7 @@ export const any = (rw) => {
         const cls = pointerRW();
         if (cls instanceof Promise)
             return cls.then(c => c.encoding(rw)());
-        else 
+        else
             return cls.encoding(rw)()
     }
 }

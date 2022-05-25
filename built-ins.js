@@ -1,7 +1,7 @@
 import { setAlias } from "./alias.js";
 import { branch } from "./encodings/flow-encodings.js";
 import { object, array, struct } from "./encodings/collection-encodings.js";
-import { utf16 } from "./encodings/string-encodings.js";
+import { utf16, variableInt } from "./encodings/string-encodings.js";
 import { float64, constant, boolean } from "./encodings/base-encodings.js";
 import { referencable, reference, any, extern, Namespace } from "./encodings/reference-encodings.js";
 
@@ -60,7 +60,20 @@ export class _Array {
     static moduleURL = moduleURL;
     static encoding = branch(
         v => {
-            const type = v.reduce((p,c) => (typeof c) === p ? p : 'object', typeof v[0]);
+            function getType(item) {
+                if (typeof item === 'number')
+                    if(Number.isInteger(item) && Math.abs(item) < 4294967296) return 'integer';
+                else return 'number';
+                return typeof item;
+            }
+            let type = getType(v[0]);
+            for (const i of v) {
+                const t = getType(i);
+                if (type !== t) {
+                    type = t;
+                    break;
+                }
+            }
             return [
                 'undefined',
                 'boolean',
@@ -70,6 +83,7 @@ export class _Array {
                 'symbol',
                 'function',
                 'object',
+                'integer',
                 ].indexOf(type);
         },
         array(constant(undefined)),
@@ -80,6 +94,7 @@ export class _Array {
         referencable(array(any)),
         referencable(array(reference)),
         referencable(array(reference)),
+        array(variableInt)
     );
 }
 setAlias(Array, _Array);

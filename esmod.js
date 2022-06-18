@@ -1,6 +1,14 @@
 import { ExternScheme } from "./scheme-handler.js";
 import { objectFollowPath } from "../utils/mod.js";
 
+/* 
+Some day this may become an issue due to the assumptions it makes when inside
+local files, as in that fetching files from localhost will return the same file.
+
+Ideally avoid loading files directly from the file system entirely and use a
+bootstrapping server of some sort to make it look like the server was loaded
+from the server itself saving any of these issues.
+*/
 
 export class EsModExtern extends ExternScheme {
     constructor() {

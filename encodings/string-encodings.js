@@ -10,7 +10,7 @@ export const string = (format) => {
         if (rw instanceof Write)
             return (value) => {
                 if (value === undefined)
-                    value = 'undefined';
+                    value = '';
                 else
                     value = value.toString();
                 const length = value.length;

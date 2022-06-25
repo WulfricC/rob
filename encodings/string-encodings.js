@@ -9,7 +9,10 @@ export const string = (format) => {
 
         if (rw instanceof Write)
             return (value) => {
-                value = value.toString();
+                if (value === undefined)
+                    value = 'undefined';
+                else
+                    value = value.toString();
                 const length = value.length;
                 indexRW(length);
                 for (let i = 0; i < length; i++)

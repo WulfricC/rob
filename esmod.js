@@ -20,8 +20,11 @@ export class EsModExtern extends ExternScheme {
             console.log('item');
             throw new Error(`Cannot find valid name for item "${item}", Name is: "${item.name}"`);
         }
-        if (!('moduleURL' in item))
+        if (!('moduleURL' in item)) {
+            console.log(item);
             throw new Error(`Cannot find moduleURL for item with name ${item.name}`);
+        }
+            
         return esmodUri(item.moduleURL, item.name);
     }
     async getItem(uri) {

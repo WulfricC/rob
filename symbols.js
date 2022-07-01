@@ -1,5 +1,6 @@
 import { constant } from "./encodings/base-encodings.js";
 import { setAlias } from "./alias.js";
+import { struct } from "./encodings.js";
 
 const moduleURL = import.meta.url;
 

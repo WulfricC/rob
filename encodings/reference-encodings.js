@@ -1,5 +1,4 @@
 import { Read, Write } from "../reader-writer.js";
-import { uint32 } from "./base-encodings.js";
 import { ascii, variableInt } from "./string-encodings.js"
 import { getAlias, hasAlias } from "../alias.js";
 
@@ -34,7 +33,7 @@ export const referencable = (format) => (rw) => {
             }
             if (rw.has(id))
                 return rw.get(id);
-            throw new Error(`item at ${id} has not yet been referenced`);
+            throw new EvalError(`item at ${id} has not yet been referenced`);
         };
     }
 };
@@ -79,7 +78,7 @@ export const any = (rw) => {
             throw err;
         }
         if (!cls.encoding) {
-            throw new Error(`No encoding found for object of type: ${cls.name}`)
+            throw new EvalError(`No encoding found for object of type: ${cls.name}`)
         }
         return cls.encoding(rw)(value);
     }

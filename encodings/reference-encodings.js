@@ -41,8 +41,7 @@ export const referencable = (format) => (rw) => {
 /**external object, handled via the passed in ExternHandler*/
 export const extern = (scheme) => (rw) => {
     const text = ascii(rw);
-    if(!(rw instanceof Write || rw instanceof Read)) console.log(rw);
-    if (rw instanceof Write)
+        if (rw instanceof Write)
         return (value) => {
             const uri = rw.externs.getURI(scheme, value);
             text(uri);
@@ -78,7 +77,7 @@ export const any = (rw) => {
             throw err;
         }
         if (!cls.encoding) {
-            throw new EvalError(`No encoding found for object of type: ${cls.name}`)
+            throw new EvalError(`No valid encoding found for object of type: ${cls.name}`)
         }
         return cls.encoding(rw)(value);
     }

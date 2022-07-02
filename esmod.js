@@ -46,7 +46,8 @@ export async function importEsmod(uri) {
     const fileUrl = (globalThis.Deno && new URL(Deno.mainModule).protocol === 'file:' && url.host === new URL(location?.origin).host
         ? 'file://' + ('/' + Deno.cwd().replaceAll('\\', '/')).replace('//', '/') + url.pathname
         : uri.replace(/^\w+:/g, 'http:')).replace(/#.*/, '');
-    const path = uri.match(/(?<=#)[\w\.]+(?=\?|$)/)[0].split('.');
+    const match = uri.match(/(?<=#)[\w\.]+(?=\?|$)/);
+    const path = match ? match[0].split('.') : [];
     const module = await import(fileUrl);
     const item = objectFollowPath(module, path);
     if (item === undefined)

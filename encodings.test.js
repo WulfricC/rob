@@ -6,7 +6,7 @@ import { any, type} from "./encodings.js";
 
 const test = Deno.test;
 
-test("basic object encoding example", () => {
+test("basic object encoding example", async () => {
     const objectToEncode = {};
 
     // encoding the data to an arrayBuffer

@@ -29,3 +29,10 @@ const buffer = writer.toBuffer();
 const reader = new Read(new ExternHandler, buffer);
 const output = await any(reader)();
 ```
+
+## Tests
+
+Run the tests with the following:
+```
+deno test --allow-read --allow-net --location=http://localhost
+```
